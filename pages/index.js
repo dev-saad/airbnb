@@ -5,6 +5,8 @@ import Header from "../components/Header";
 import LargeCard from "../components/LargeCard";
 import MediumCard from "../components/MediumCard";
 import SmallCard from "../components/SmallCard";
+import nextId from "react-id-generator";
+import { useMotionValue } from "framer-motion";
 
 export default function Home({ exploreData, cardsData }) {
   return (
@@ -28,16 +30,21 @@ export default function Home({ exploreData, cardsData }) {
                 img={item.img}
                 distance={item.distance}
                 location={item.location}
-                key={item.img}
+                key={nextId()}
               />
             ))}
           </div>
         </section>
-        <section>
+        <section className="relative">
           <h2 className="text-4xl font-semibold py-8">Live Anywhere</h2>
           <div className="flex space-x-3 overflow-x-scroll scrollbar-hide overscroll-x-contain p-3">
             {cardsData.map((item) => (
-              <MediumCard key={item.img} img={item.img} title={item.title} />
+              <MediumCard
+                key={nextId()}
+                img={item.img}
+                title={item.title}
+                id={nextId()}
+              />
             ))}
           </div>
         </section>
