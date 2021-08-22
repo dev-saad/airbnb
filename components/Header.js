@@ -36,6 +36,7 @@ const Header = ({ placeholder }) => {
           numOfGuests,
         },
       });
+    setSearchInput("");
   };
 
   const selectionRange = {
@@ -86,7 +87,7 @@ const Header = ({ placeholder }) => {
             rangeColors={["#fd5b61"]}
             onChange={handleSelect}
           />
-          <div className="flex items-center border-b mb-4">
+          <div className="flex items-center border-b mb-1">
             <h2 className="text-2xl flex-grow font-semibold">
               Number of Guests
             </h2>
@@ -99,14 +100,17 @@ const Header = ({ placeholder }) => {
               className="w-12 pl-2 text-lg outline-none text-red-400"
             />
           </div>
-          <div className="flex">
+          <div className="flex space-x-1">
             <button
-              className="flex-grow text-gray-500"
+              className="flex-grow rounded-md text-gray-500 hover:bg-gray-100 hover:text-black transition-all duration-200 ease-out h-full py-2"
               onClick={() => setSearchInput("")}
             >
               Cancel
             </button>
-            <button className="flex-grow text-red-400" onClick={search}>
+            <button
+              className="flex-grow rounded-md text-red-400 hover:bg-red-400 hover:text-white transition-all duration-200 ease-out h-full py-2"
+              onClick={search}
+            >
               Search
             </button>
           </div>

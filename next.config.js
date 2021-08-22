@@ -1,6 +1,6 @@
 module.exports = {
   images: {
-    domains: ["links.papareact.com"],
+    domains: ["links.papareact.com", "thumbnails.trvl-media.com"],
   },
   env: {
     mapbox_key:

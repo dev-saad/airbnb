@@ -4,13 +4,16 @@ import { useRouter } from "next/dist/client/router";
 import { format } from "date-fns";
 import InfoCard from "../components/InfoCard";
 import Map from "../components/Map";
+import Response from "../Response";
+import { flushLayout } from "framer-motion";
 
-const Search = ({ searchResults }) => {
+const Search = ({ hotelsDetails }) => {
   const router = useRouter();
   const { location, startDate, endDate, numOfGuests } = router.query;
   const formattedStartDate = format(new Date(startDate), "dd MMMM yy");
   const formattedEndDate = format(new Date(endDate), "dd MMMM yy");
   const range = `${formattedStartDate} - ${formattedEndDate}`;
+  const hotels = hotelsDetails.data.body.searchResults.results;
 
   return (
     <div>
@@ -36,24 +39,22 @@ const Search = ({ searchResults }) => {
             <p className="button">More filters</p>
           </div>
           <div className="flex flex-col">
-            {searchResults.map(
-              ({ img, location, title, description, star, price, total }) => (
-                <InfoCard
-                  key={img}
-                  img={img}
-                  location={location}
-                  title={title}
-                  description={description}
-                  star={star}
-                  price={price}
-                  total={total}
-                />
-              )
-            )}
+            {hotels.map((hotel) => (
+              <InfoCard
+                key={hotel.id}
+                img={hotel.optimizedThumbUrls.srpDesktop}
+                location={`${hotel.address.streetAddress}, ${hotel.address.locality}, ${hotel.address.countryName}`}
+                title={hotel.name}
+                description={hotel.name}
+                star={hotel.guestReviews.rating && hotel.guestReviews.rating}
+                price={hotel.ratePlan.price.current}
+                total={hotel.ratePlan.price.current}
+              />
+            ))}
           </div>
         </section>
         <section className="hidden xl:inline-flex xl:min-w-[600px] ">
-          <Map searchResults={searchResults} />
+          <Map hotels={hotels} />
         </section>
       </main>
       <Footer />
@@ -63,14 +64,48 @@ const Search = ({ searchResults }) => {
 
 export default Search;
 
-export const getServerSideProps = async () => {
-  const searchResults = await fetch("https://links.papareact.com/isz").then(
-    (res) => res.json()
-  );
+export const getServerSideProps = async (context) => {
+  const useDummyData = false;
+
+  const hotelCity = useDummyData
+    ? Response
+    : await fetch(
+        `https://hotels4.p.rapidapi.com/locations/search?query=${context.query.location}&locale=en_US`,
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "hotels4.p.rapidapi.com",
+            "x-rapidapi-key":
+              "fdff6d0282mshecd2375cbca7f68p19a39ejsnad69a9808735",
+          },
+        }
+      )
+        .then((response) => response.json())
+        .catch((err) => {
+          console.error(err);
+        });
+
+  const formatCheckIn = format(new Date(context.query.startDate), "yyyy-MM-dd");
+  const formatCheckOut = format(new Date(context.query.endDate), "yyyy-MM-dd");
+
+  const hotelsDetails = await fetch(
+    `https://hotels4.p.rapidapi.com/properties/list?destinationId=${hotelCity.suggestions[0].entities[0].destinationId}&pageNumber=1&pageSize=25&checkIn=${formatCheckIn}&checkOut=${formatCheckOut}&adults1=1&sortOrder=PRICE&locale=en_US&currency=USD`,
+    {
+      method: "GET",
+      headers: {
+        "x-rapidapi-host": "hotels4.p.rapidapi.com",
+        "x-rapidapi-key": "378b3d9c05msh8820a66ca2c1517p186b77jsnb940a695514c",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .catch((err) => {
+      console.error(err);
+    });
 
   return {
     props: {
-      searchResults,
+      hotelsDetails,
     },
   };
 };
