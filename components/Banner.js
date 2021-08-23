@@ -10,8 +10,10 @@ const Banner = () => {
         objectPosition="bottom"
       />
       <div className="absolute top-1/2 w-full text-center">
-        <p className="text-sm sm:text-lg">Not sure where to go? Perfect</p>
-        <button className="text-purple-500 bg-white px-10 py-4 shadow-md rounded-full font-bold my-3 hover:shadow-lg active:scale-90 origin-center transition-all duration-50">
+        <p className="text-sm sm:text-xl font-semibold text-gray-900">
+          Not sure where to go? Perfect
+        </p>
+        <button className="text-purple-500 bg-white px-12 py-4 shadow-md rounded-full font-bold my-5 hover:shadow-lg active:scale-95 origin-center transition-all duration-50 text-lg">
           I'm flexible
         </button>
       </div>

@@ -46,7 +46,7 @@ const Search = ({ hotelsDetails }) => {
                 location={`${hotel.address.streetAddress}, ${hotel.address.locality}, ${hotel.address.countryName}`}
                 title={hotel.name}
                 description={hotel.name}
-                star={hotel.guestReviews.rating && hotel.guestReviews.rating}
+                star={hotel.guestReviews && hotel.guestReviews.rating}
                 price={hotel.ratePlan.price.current}
                 total={hotel.ratePlan.price.current}
               />
@@ -74,9 +74,8 @@ export const getServerSideProps = async (context) => {
         {
           method: "GET",
           headers: {
-            "x-rapidapi-host": "hotels4.p.rapidapi.com",
-            "x-rapidapi-key":
-              "fdff6d0282mshecd2375cbca7f68p19a39ejsnad69a9808735",
+            "x-rapidapi-host": process.env.xRapidapiHost,
+            "x-rapidapi-key": process.env.xRapidapiKey,
           },
         }
       )
@@ -93,8 +92,8 @@ export const getServerSideProps = async (context) => {
     {
       method: "GET",
       headers: {
-        "x-rapidapi-host": "hotels4.p.rapidapi.com",
-        "x-rapidapi-key": "378b3d9c05msh8820a66ca2c1517p186b77jsnb940a695514c",
+        "x-rapidapi-host": process.env.xRapidapiHost,
+        "x-rapidapi-key": process.env.xRapidapiKey,
       },
     }
   )
