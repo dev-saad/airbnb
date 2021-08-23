@@ -1,5 +1,6 @@
 import Image from "next/image";
 import {
+  CashIcon,
   GlobeAltIcon,
   MenuIcon,
   SearchIcon,
@@ -16,7 +17,10 @@ const Header = ({ placeholder }) => {
   const [searchInput, setSearchInput] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [numOfGuests, setNumOfGuests] = useState(1);
+  const [numOfChildren, setNumOfChildren] = useState("0");
+  const [numOfAdults, setNumOfAdults] = useState("1");
+  const [minPrice, setMinPrice] = useState();
+  const [maxPrice, setMaxPrice] = useState();
   const router = useRouter();
 
   const handleSelect = (ranges) => {
@@ -33,7 +37,10 @@ const Header = ({ placeholder }) => {
           location: searchInput,
           startDate: startDate.toISOString(),
           endDate: endDate.toISOString(),
-          numOfGuests,
+          numOfChildren,
+          numOfAdults,
+          maxPrice,
+          minPrice,
         },
       });
     setSearchInput("");
@@ -87,18 +94,53 @@ const Header = ({ placeholder }) => {
             rangeColors={["#fd5b61"]}
             onChange={handleSelect}
           />
-          <div className="flex items-center border-b mb-1">
-            <h2 className="text-2xl flex-grow font-semibold">
-              Number of Guests
-            </h2>
-            <UsersIcon className="h-5" />
-            <input
-              value={numOfGuests}
-              onChange={(e) => setNumOfGuests(e.target.value)}
-              min={1}
-              type="number"
-              className="w-12 pl-2 text-lg outline-none text-red-400"
-            />
+          <div className="flex items-center border-b mb-1 children:flex children:justify-between children:items-center children:flex-1 children:px-5 children:py-3 children:bg-gray-50 space-x-2 my-2">
+            <div>
+              <h2 className="text-xl flex-grow font-semibold">Adults</h2>
+              <UsersIcon className="h-5" />
+              <input
+                value={numOfAdults}
+                onChange={(e) => setNumOfAdults(e.target.value)}
+                min={1}
+                type="number"
+                className="w-12 pl-2 text-lg outline-none text-red-400"
+              />
+            </div>
+            <div>
+              <h2 className="text-xl flex-grow font-semibold">Children</h2>
+              <UsersIcon className="h-5" />
+              <input
+                value={numOfChildren}
+                onChange={(e) => setNumOfChildren(e.target.value)}
+                min={0}
+                type="number"
+                className="w-12 pl-2 text-lg outline-none text-red-400"
+              />
+            </div>
+          </div>
+          <div className="flex items-center border-b mb-1 children:flex children:justify-between children:items-center children:flex-1 children:px-5 children:py-3 children:bg-gray-50 space-x-2 my-2">
+            <div>
+              <h2 className="text-xl flex-grow font-semibold">Min Price</h2>
+              <CashIcon className="h-5" />
+              <input
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                min={0}
+                type="number"
+                className="w-12 pl-2 text-lg outline-none text-red-400"
+              />
+            </div>
+            <div>
+              <h2 className="text-xl flex-grow font-semibold">Max Price</h2>
+              <CashIcon className="h-5" />
+              <input
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                min={10}
+                type="number"
+                className="w-12 pl-2 text-lg outline-none text-red-400"
+              />
+            </div>
           </div>
           <div className="flex space-x-1">
             <button

@@ -21,6 +21,7 @@ const Map = ({ hotels }) => {
   return (
     <ReactMapGL
       mapStyle="mapbox://styles/alsaadkarim/ckshm6z211xtu17k0jonu27an"
+      className="!h-screen"
       mapboxApiAccessToken={process.env.mapbox_key}
       {...viewPort}
       onViewportChange={(nextViewport) => setViewPort(nextViewport)}
